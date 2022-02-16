@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { getRemoteConfig } from "firebase/remote-config";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAahxhmfiQPCuwJx8Tsy9Nt-HizB-VJRNU",
@@ -17,6 +18,7 @@ const firebaseConfig = {
 if (typeof window !== "undefined") {
   const app = initializeApp(firebaseConfig);
   const _analytics = getAnalytics(app);
+  const _remoteConfig = getRemoteConfig(app);
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
