@@ -4,10 +4,12 @@ import { fetchAndActivate, getAll, RemoteConfig } from "firebase/remote-config";
 
 import { remoteConfigApp } from "../firebase";
 
+export interface IParams {
+  someAwesomeFeatureEnabled: boolean;
+}
+
 interface IProps {
-  defaults: {
-    [key: string]: boolean;
-  };
+  defaults: IParams;
   children: React.ReactNode;
 }
 
@@ -34,7 +36,7 @@ const FlagsProvider = ({ defaults, children }: IProps) => {
           };
 
           for (const [key, config] of Object.entries(remoteFlags)) {
-            newFlags[key] = config.asBoolean();
+            newFlags[key as keyof IParams] = config.asBoolean();
           }
 
           setFlags(newFlags);
@@ -50,3 +52,7 @@ const FlagsProvider = ({ defaults, children }: IProps) => {
 };
 
 export default FlagsProvider;
+
+export const useFlags = () => {
+  return React.useContext(FlagsContext) as IParams;
+};

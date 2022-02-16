@@ -1,10 +1,13 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import { useFlags } from "../store/FlagsProvider";
 
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
+  const { someAwesomeFeatureEnabled } = useFlags();
+
   return (
     <div className={styles.container}>
       <Head>
@@ -14,7 +17,9 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
+        <h1
+          className={someAwesomeFeatureEnabled ? styles.titleA : styles.titleB}
+        >
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
 
