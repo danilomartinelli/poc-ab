@@ -1,17 +1,12 @@
 import React from "react";
 
-import {
-  fetchAndActivate,
-  getAll,
-  RemoteConfig,
-  Value,
-} from "firebase/remote-config";
+import { fetchAndActivate, getAll, RemoteConfig } from "firebase/remote-config";
 
 import { remoteConfigApp } from "../firebase";
 
 interface IProps {
   defaults: {
-    [key: string]: Value | boolean;
+    [key: string]: boolean;
   };
   children: React.ReactNode;
 }
@@ -35,11 +30,14 @@ const FlagsProvider = ({ defaults, children }: IProps) => {
         })
         .then((remoteFlags) => {
           const newFlags = {
-            ...remoteFlags,
+            ...flags,
           };
 
+          for (const [key, config] of Object.entries(remoteFlags)) {
+            newFlags[key] = config.asBoolean();
+          }
+
           setFlags(newFlags);
-          console.log(newFlags);
         })
         .catch((error) => console.error(error));
     }
